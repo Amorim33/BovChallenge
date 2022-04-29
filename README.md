@@ -1,5 +1,5 @@
 # BovChallenge
-milk-hiring, frontend challenge
+milk-hiring, frontend challenge, developed entirely inside Expo managed workflow, so feel free to use **Expo Go**!
 
 ## Installation
 - Clone the repository and run ```npm install```
