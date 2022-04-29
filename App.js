@@ -11,7 +11,9 @@ export default function App() {
   // Basic configuration
   const [checklistData, setChecklistData] = useState(null);
   const apiUri =
-    "https://bovchallenge-default-rtdb.firebaseio.com/data/checklists.json";
+    "https://bovtest-842c0-default-rtdb.firebaseio.com/data/checklists.json";
+  const CryptoJS = require("crypto-js");
+  const cryptKey = "bovTest";
 
   // Retrieving Data
   useEffect(() => {
@@ -52,11 +54,16 @@ export default function App() {
           };
           // Request online APIRest
           fetch(apiUri)
-            .then((response) => response.json())
+            .then((response) => response.json()) //decrypting data
             .then((responseJson) => {
+              const bytes = CryptoJS.AES.decrypt(responseJson.data, cryptKey);
+              const decryptedData = JSON.parse(
+                bytes.toString(CryptoJS.enc.Utf8)
+              );
+              console.log(decryptedData);
               let aux = [];
-              for (let i in responseJson) {
-                aux.push(responseJson[i]);
+              for (let i in decryptedData) {
+                aux.push(decryptedData[i]);
               }
 
               setChecklistData(aux);
@@ -67,7 +74,13 @@ export default function App() {
             try {
               const jsonValue = await AsyncStorage.getItem("@checklistData");
               setChecklistData(
-                jsonValue != null ? JSON.parse(jsonValue) : null
+                jsonValue != null
+                  ? JSON.parse(
+                      CryptoJSAES.decrypt(jsonValue, cryptKey).toString(
+                        CryptoJS.enc.Utf8
+                      )
+                    ) //decrypting and parsing data
+                  : null
               );
             } catch (e) {
               console.log(e);

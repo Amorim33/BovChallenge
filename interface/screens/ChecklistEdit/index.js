@@ -54,16 +54,22 @@ const ChecklistEdit = (props) => {
 
     // Bad practice alert, that is supposed to be handled by the network layer. However I Hadn't have enough time
     const apiUri =
-      "https://bovchallenge-default-rtdb.firebaseio.com/data/checklists.json";
+      "https://bovtest-842c0-default-rtdb.firebaseio.com/data/checklists.json";
+    const CryptoJS = require("crypto-js");
+    const cryptKey = "bovTest";
     NetInfo.fetch().then((state) => {
       if (state.isConnected) {
+        const encryptedData = CryptoJS.AES.encrypt(
+          JSON.stringify(aux),
+          cryptKey
+        ).toString(); // encrypting aux, the updated checklistData
         // Request online APIRest
         fetch(apiUri, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(aux), // aux is the updated checklistData
+          body: JSON.stringify({ data: encryptedData }),
         });
       } else {
         // Set offline bool
@@ -71,7 +77,10 @@ const ChecklistEdit = (props) => {
         // Store local data
         async () => {
           try {
-            const jsonValue = JSON.stringify(aux); // aux is the updated checklistData
+            const jsonValue = CryptoJS.AES.encrypt(
+              JSON.stringify(aux),
+              cryptKey
+            ).toString(); // encrypting aux, the updated checklistData
             await AsyncStorage.setItem("@checklistData", jsonValue);
             await AsyncStorage.setItem("@offlineRequestOpen", true);
             setOfflineRequestOpen(true);
