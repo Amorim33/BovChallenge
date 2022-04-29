@@ -7,5 +7,5 @@ milk-hiring, frontend challenge, developed entirely inside Expo managed workflow
 - If you have not, consult [Expo docs](https://docs.expo.dev).
 
 ### Extras
-- [Api link](https://bovtest-842c0-default-rtdb.firebaseio.com/data.jso)
+- [Api link](https://bovtest-842c0-default-rtdb.firebaseio.com/data.json)
 - All stored data is encrypted, in order to improve the security, the encryption type is AES.
